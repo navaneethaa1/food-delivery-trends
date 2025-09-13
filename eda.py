@@ -1,0 +1,21 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.read_csv("zomato.csv")
+df['rate (out of 5)'] = pd.to_numeric(df['rate (out of 5)'], errors = 'coerce')
+df['avg cost (two people)'] = pd.to_numeric(df['avg cost (two people)'].astype(str).str.replace(',', ''), errors = 'coerce')
+fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+axes[0].hist(df['rate (out of 5)'].dropna(), bins = 20, color = 'skyblue', edgecolor = 'black')
+axes[0].set_title("Distribution of Restaurant Rating")
+axes[0].set_xlabel("Rating")
+axes[0].set_ylabel("Count")
+axes[1].scatter(df['avg cost (two people)'], df['rate (out of 5)'], alpha = 0.5, color = 'orange')
+axes[1].set_title("Average Cost vs Ratings")
+axes[1].set_xlabel("Average cost (for 2)")
+axes[1].set_ylabel("Rating")
+df['cuisines type'].value_counts().head(10).plot(kind = 'bar', ax = axes[2], color = 'green')
+axes[2].set_title("Top 10 Popular Cuisines")
+axes[2].set_xlabel("Cuisine")
+axes[2].set_ylabel("Count")
+plt.tight_layout()
+plt.show()
+
